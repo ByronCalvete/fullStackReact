@@ -10,47 +10,32 @@ const ListOfClicks = ({ clicks }) => {
 	return <p>{clicks.join(', ')}</p>;
 };
 
-const INITIAL_COUNTER_STATE = {
-	left: 2,
-	right: 4,
-};
-
 const App = () => {
 	// const [left, setLeft] = useState(10);
 	// const [right, setRight] = useState(20);
-
-	const [counters, setCounters] = useState(INITIAL_COUNTER_STATE);
-
 	const [clicks, setClicks] = useState([]);
 
 	const handleClickLeft = () => {
-		setCounters({
-			...counters,
-			left: counters.left + 1,
-		});
 		setClicks((prevClicks) => [...prevClicks, 'L']);
 	};
 
 	const handleClickRight = () => {
-		setCounters({
-			...counters,
-			right: counters.right + 1,
-		});
 		setClicks((prevClicks) => [...prevClicks, 'R']);
 	};
 
 	const handleReset = () => {
-		setCounters(INITIAL_COUNTER_STATE);
-
 		setClicks([]);
 	};
 
+	const left = clicks.filter((click) => click === 'L');
+	const right = clicks.filter((click) => click === 'R');
+
 	return (
 		<div>
-			{counters.left}
+			{left.length}
 			<button onClick={handleClickLeft}>Left</button>
 			<button onClick={handleClickRight}>Right</button>
-			{counters.right}
+			{right.length}
 			<p>
 				<button onClick={handleReset}>reset</button>
 			</p>
