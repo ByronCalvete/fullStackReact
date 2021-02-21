@@ -2,31 +2,59 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-const App = (props) => {
-  const [contador, setContador] = useState(0)
+const WarningNotUsed = () => {
+  return <h1>Todavía no se ha usado el contador</h1>;
+};
 
-  console.log('render')
+const ListOfClicks = ({ clicks }) => {
+  return <p>{clicks.join(', ')}</p>;
+};
+const App = () => {
+  // const [left, setLeft] = useState(10);
+  // const [right, setRight] = useState(20);
+
+  const [counters, setCounters] = useState({
+    left: 0,
+    right: 0,
+  });
+
+  const [clicks, setClicks] = useState([]);
+
+  const handleClickLeft = () => {
+    setCounters({
+      ...counters,
+      left: counters.left + 1,
+    });
+    setClicks((prevClicks) => [...prevClicks, 'L']);
+  };
+
+  const handleClickRight = () => {
+    setCounters({
+      ...counters,
+      right: counters.right + 1,
+    });
+    setClicks((prevClicks) => [...prevClicks, 'R']);
+  };
 
   return (
     <div>
-      <p>El valor del contador es</p>
-      <h1>{contador}</h1>
-      <button onClick={() => {
-        setContador(contador + 1)
-        // setContador(prevContador => {
-        //   console.log(prevContador)
-        //   return prevContador + 1
-        // })
-      }}>
-        Incrementar
-      </button>
+      {counters.left}
+      <button onClick={handleClickLeft}>Left</button>
+      <button onClick={handleClickRight}>Right</button>
+      {counters.right}
+      <p>Clicks totales: {clicks.length}</p>
+      {clicks.length === 0 ? (
+        <WarningNotUsed />
+      ) : (
+        <ListOfClicks clicks={clicks} />
+      )}
     </div>
-  )
-}
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById('root')
   );
+};
 
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
