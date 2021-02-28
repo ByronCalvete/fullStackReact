@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import './styles.css';
+
 import { Note } from './Note.js';
-import axios from 'axios';
+import { getAllNotes } from './services/notes/getAllNotes';
+import { createNote } from './services/notes/createNote';
 
 const App = () => {
 	const [notes, setNotes] = useState([]);
@@ -15,9 +17,8 @@ const App = () => {
 	useEffect(() => {
 		console.log('useEffect');
 		setLoading(true);
-		axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
-			const { data } = response;
-			setNotes(data);
+		getAllNotes().then((notes) => {
+			setNotes(notes);
 			setLoading(false);
 		});
 	}, []);
@@ -28,13 +29,16 @@ const App = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
+
 		const noteToAddToState = {
-			id: notes.length + 1,
 			title: newNote,
 			body: newNote,
+			userId: 1,
 		};
 
-		setNotes([...notes, noteToAddToState]);
+		createNote(noteToAddToState).then((newNote) => {
+			setNotes([...notes, newNote]);
+		});
 		setNewNote('');
 	};
 
