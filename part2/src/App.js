@@ -9,6 +9,7 @@ const App = () => {
 	const [notes, setNotes] = useState([]);
 	const [newNote, setNewNote] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState('');
 
 	// if (typeof data === 'undefined' || data.length === 0) {
 	// 	return 'No tenemos notas que mostrar';
@@ -36,9 +37,16 @@ const App = () => {
 			userId: 1,
 		};
 
-		createNote(noteToAddToState).then((newNote) => {
-			setNotes([...notes, newNote]);
-		});
+		setError('');
+
+		createNote(noteToAddToState)
+			.then((newNote) => {
+				setNotes([...notes, newNote]);
+			})
+			.catch((error) => {
+				console.log(error);
+				setError('La API ha petado');
+			});
 		setNewNote('');
 	};
 
@@ -56,6 +64,7 @@ const App = () => {
 				<input type="text" onChange={handleChange} value={newNote} />
 				<button>Create note</button>
 			</form>
+			{error && <span style={{ color: 'red' }}>{error}</span>}
 		</div>
 	);
 };
