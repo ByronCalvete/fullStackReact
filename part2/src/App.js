@@ -42,6 +42,7 @@ const App = () => {
 		createNote(noteToAddToState)
 			.then((newNote) => {
 				setNotes([...notes, newNote]);
+				// setNotes((prevNotes) => prevNotes.concat(newNote));
 			})
 			.catch((error) => {
 				console.log(error);
