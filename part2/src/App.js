@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './styles.css';
 import { Note } from './Note.js';
+import axios from 'axios';
 
 const App = () => {
 	const [notes, setNotes] = useState([]);
@@ -14,14 +15,11 @@ const App = () => {
 	useEffect(() => {
 		console.log('useEffect');
 		setLoading(true);
-		setTimeout(() => {
-			fetch('https://jsonplaceholder.typicode.com/posts')
-				.then((response) => response.json())
-				.then((json) => {
-					setNotes(json);
-					setLoading(false);
-				});
-		}, 1000);
+		axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
+			const { data } = response;
+			setNotes(data);
+			setLoading(false);
+		});
 	}, []);
 
 	const handleChange = (event) => {
